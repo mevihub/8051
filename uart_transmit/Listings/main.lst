@@ -1,0 +1,66 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              03/24/2021 16:17:57 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          
+   3          // uart init
+   4          
+   5          void UART_Init()
+   6          {
+   7   1        SCON=0X50;//8 bit 1 start
+   8   1        TMOD=0X20;//8 bit mode2
+   9   1        TH1=0Xfd;//253 baud rate 9600
+  10   1        TR1=1;//start timer
+  11   1      }
+  12          
+  13          // uart send charector
+  14          
+  15          void send_char(unsigned char ch)
+  16          {
+  17   1        SBUF=ch;
+  18   1        while(TI==0);//wait for transmit
+  19   1        TI=0;
+  20   1      }
+  21          
+  22          // uart send string 
+  23          
+  24          void send(unsigned char *str)
+  25          {
+  26   1        while(*str)
+  27   1        {
+  28   2          send_char(*str);
+  29   2          str++;
+  30   2        }
+  31   1      }
+  32          
+  33          main()
+  34          {
+  35   1        UART_Init();
+  36   1        while(1)
+  37   1        {
+  38   2          
+  39   2        send("welcome to embedded system\r\n");
+  40   2        }
+  41   1        
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     53    ----
+   CONSTANT SIZE    =     29    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

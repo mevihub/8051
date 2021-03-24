@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj" 
+TO ".\Objects\uart_transmit" 
+PRINT(".\Listings\uart_transmit.m51")

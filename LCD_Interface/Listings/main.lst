@@ -1,0 +1,104 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              03/24/2021 15:33:56 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          
+   2          #include <reg51.h>
+   3          
+   4          sbit RS=P3^0;
+   5          sbit RW=P3^1;
+   6          sbit EN=P3^2;
+   7          
+   8          sfr LCD=0XA0;
+   9          
+  10          // delay function 
+  11          void Delay(unsigned int t)
+  12          {
+  13   1      unsigned int i;
+  14   1      while(t--)
+  15   1      for(i=0;i<1257;i++);
+  16   1      }
+  17          
+  18          // lcd cmd lines
+  19          
+  20          void lcd_cmd(unsigned char ch)
+  21          {
+  22   1      LCD=ch;
+  23   1      RS=0;
+  24   1      RW=0;
+  25   1      EN=1;
+  26   1      Delay(3);
+  27   1      EN=0;
+  28   1      }
+  29          
+  30          // lcd data commands 
+  31          
+  32          void lcd_data(unsigned char ch)
+  33          {
+  34   1      LCD=ch;
+  35   1      RS=1;
+  36   1      RW=0;
+  37   1      EN=1;
+  38   1      Delay(3);
+  39   1      EN=0;
+  40   1      }
+  41          
+  42          
+  43          // lcd init fuction
+  44          
+  45          void lcd_init()
+  46          {
+  47   1      lcd_cmd(0X38);//Use 2 lines and 5×7 matrix
+  48   1      lcd_cmd(0X06);//Increment cursor
+  49   1      lcd_cmd(0X0C);//Display ON ,Cursor blinking OFF
+  50   1      lcd_cmd(0X01);//Clear screen
+  51   1      lcd_cmd(0X80);//start display from first line first charcater
+  52   1      }
+  53           
+  54          // lcd print 
+C51 COMPILER V9.59.0.0   MAIN                                                              03/24/2021 15:33:56 PAGE 2   
+
+  55          
+  56          void lcd_print(unsigned char *str)
+  57          {
+  58   1      while(*str)
+  59   1      {
+  60   2      lcd_data(*str);
+  61   2      str++;  }
+  62   1      }
+  63          
+  64          main()
+  65          {
+  66   1        while(1)
+  67   1        {
+  68   2        lcd_init();
+  69   2        lcd_cmd(0X80);//Cursor line 1 position 4
+  70   2        lcd_print("WelCome embedded");
+  71   2        lcd_cmd(0XC0);//For  2nd line
+  72   2        lcd_print("LCD INTERFACING");
+  73   2        lcd_cmd(0X94);//for third line
+  74   2        lcd_print("well come");
+  75   2        lcd_cmd(0XD4);//for fourth line
+  76   2        lcd_print("DEVIL ");
+  77   2        }
+  78   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    179    ----
+   CONSTANT SIZE    =     50    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
